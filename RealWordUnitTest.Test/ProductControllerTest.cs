@@ -104,7 +104,7 @@ namespace RealWordUnitTest.Test
         [Fact]
         public async void CreatePOST_ValidModelState_CreateMethodExecute()
         {
-            Product product = null;
+             Product product = null;
             _mockRepo.Setup(x => x.Create(It.IsAny<Product>())).Callback<Product>(x=> product = x);
             var result = await _productController.Create(products.First());  
             _mockRepo.Verify(x=>x.Create(It.IsAny<Product>()),Times.Once);
@@ -115,7 +115,7 @@ namespace RealWordUnitTest.Test
         public async void CreatePOST_InvalidModelState_NeverCreateExecute()
         {
             _productController.ModelState.AddModelError("Name", "");
-            var result = await _productController.Create(products.First());
+           // var result = await _productController.Create(products.First());
             _mockRepo.Verify(repo => repo.Create(It.IsAny<Product>()), Times.Never);
         }
 
