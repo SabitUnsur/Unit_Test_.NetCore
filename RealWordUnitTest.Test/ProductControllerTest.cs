@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xunit;
 
 namespace RealWordUnitTest.Test
 {
@@ -105,6 +106,7 @@ namespace RealWordUnitTest.Test
         public async void CreatePOST_ValidModelState_CreateMethodExecute()
         {
              Product product = null;
+;
             _mockRepo.Setup(x => x.Create(It.IsAny<Product>())).Callback<Product>(x=> product = x);
             var result = await _productController.Create(products.First());  
             _mockRepo.Verify(x=>x.Create(It.IsAny<Product>()),Times.Once);
@@ -117,6 +119,150 @@ namespace RealWordUnitTest.Test
             _productController.ModelState.AddModelError("Name", "");
            // var result = await _productController.Create(products.First());
             _mockRepo.Verify(repo => repo.Create(It.IsAny<Product>()), Times.Never);
+        }
+
+        [Fact]
+        public async void Edit_IsNull_ReturnRedirectToIndexAction()
+        {
+           var result = await _productController.Edit(null);
+           var redirect= Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Index", redirect.ActionName);
+        }
+
+        [Theory]
+        [InlineData(3)]
+        public async void Edit_IdInvalid_ReturnNotFound(int productID)
+        {
+            Product product = null;
+            _mockRepo.Setup(x => x.GetByID(productID)).ReturnsAsync(product);
+            var result = await _productController.Edit(productID);
+            var redirect = Assert.IsType<NotFoundResult>(result);
+            Assert.Equal<int>(404, redirect.StatusCode);
+        }
+
+        [Theory]
+        [InlineData(2)]
+        public async void Edit_IdValid_ActionExecutes_ReturnProduct(int productID)
+        {
+            var product = products.First(x => x.ID == productID);
+            _mockRepo.Setup(x => x.GetByID(productID)).ReturnsAsync(product);
+            var result = await _productController.Edit(productID);
+            var ViewResult = Assert.IsType<ViewResult>(result);
+            var resultProduct = Assert.IsAssignableFrom<Product>(ViewResult.Model);
+            Assert.Equal(product.ID, resultProduct.ID);
+            Assert.Equal(product.Name, resultProduct.Name);
+        }
+
+        [Theory]
+        [InlineData(1)]
+        public void EditPOST_IdIsNotEqualProduct_ReturnNotFound(int productID)
+        {
+            var result = _productController.Edit(2, products.First(x => x.ID == productID));
+            var redirect= Assert.IsType<NotFoundResult>(result);
+        }
+
+        [Theory]
+        [InlineData(1)]
+        public void EditPOST_InvalidModelState_ReturnView(int productID)
+        {
+            _productController.ModelState.AddModelError("Name", "");
+            var result = _productController.Edit(productID, products.First(x => x.ID == productID));
+            var ViewResult = Assert.IsType<ViewResult>(result);
+            Assert.IsType<Product>(ViewResult.Model);
+        }
+
+        [Theory]
+        [InlineData(1)]
+        public void EditPOST_ValidModelState_ReturnRedirectToIndexAction(int productID)
+        {
+            var result = _productController.Edit(productID, products.First(x => x.ID == productID));
+            var redirect = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Index", redirect.ActionName);
+        }
+
+        [Theory]
+        [InlineData(1)]
+        public void EditPOST_ValidModelState_UpdateMethodExecute(int productID)
+        {
+            var product = products.First(x => x.ID == productID);
+            _mockRepo.Setup(x => x.Update(product));
+            _productController.Edit(productID, product);
+            _mockRepo.Verify(x => x.Update(It.IsAny<Product>()), Times.Once);
+        }
+
+        [Fact]
+        public async void Delete_IdIsNull_ReturnNotFound()
+        {
+            var result = await _productController.Delete(null); 
+            Assert.IsType<NotFoundResult>(result);
+        }
+
+        [Theory]
+        [InlineData(0)]
+        public async void Delete_IdIsNotEqualProduct_ReturnNotFound(int productID)
+        {
+            Product product = null;
+            _mockRepo.Setup(x=>x.GetByID(productID)).ReturnsAsync(product);
+            var result = await _productController.Delete(productID);
+            Assert.IsType<NotFoundResult>(result);
+        }
+
+
+        [Theory]
+        [InlineData(1)]
+        public async void Delete_ActionExecutes_ReturnProduct(int productID)
+        {
+            var product = products.First(x => x.ID == productID);
+            _mockRepo.Setup( x => x.GetByID(productID)).ReturnsAsync(product);
+            var result = await _productController.Delete(productID);
+            var ViewResult = Assert.IsType<ViewResult>(result);
+            Assert.IsAssignableFrom<Product>(ViewResult.Model);
+        }
+
+        [Theory]
+        [InlineData(1)]
+        public async void DeleteConfirmed_ActionExecutes_ReturnRedirectToIndexAction(int productID)
+        {
+            var result = await _productController.DeleteConfirmed(productID);
+            var redirect = Assert.IsType<RedirectToActionResult>(result);
+        }
+
+        [Theory]
+        [InlineData(1)]
+        public async void DeleteConfirmed_ActionExecutes_DeleteMethodExecutes(int productID)
+        {
+            var product = products.First(x => x.ID == productID);
+            _mockRepo.Setup(x => x.Delete(product));
+            await _productController.DeleteConfirmed(productID);
+            _mockRepo.Verify(x => x.Delete(It.IsAny<Product>()), Times.Once);
+        }
+
+        [Theory]
+        [InlineData(null)]
+        public  void ProductExist_IdIsNull_ReturnFalse(int productID)
+        {
+            var result = _productController.ProductExists(productID);
+            Assert.False(result);
+        }
+
+        [Theory]
+        [InlineData(1)]
+        public void ProductExist_IdIsValid_ReturnTrue(int productID)
+        {
+            var product = products.First(x => x.ID == productID);
+            _mockRepo.Setup(x => x.GetByID(productID)).ReturnsAsync(product);
+            var result  = _productController.ProductExists(productID);
+            Assert.True(result);
+        }
+
+        [Theory]
+        [InlineData(1)]
+        public void ProductExist_ActionExecutes_ReturnProduct(int productID)
+        {
+            var product = products.First(x => x.ID == productID); 
+            _mockRepo.Setup(x => x.GetByID(productID)).Returns(Task.FromResult(product));
+            var result =  _productController.ProductExists(productID);
+            _mockRepo.Verify(x => x.GetByID(productID));
         }
 
     }

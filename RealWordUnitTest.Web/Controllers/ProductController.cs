@@ -70,7 +70,7 @@ namespace RealWordUnitTest.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("Index");
             }
 
             var product = await _repository.GetByID((int)id);
@@ -131,9 +131,9 @@ namespace RealWordUnitTest.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProductExists(int id)
+        public bool ProductExists(int id)
         {
-          var product = _repository.GetByID(id).Result;
+            var product = _repository.GetByID(id).Result;
             if (product == null) { return false; }
             else return true;
         }
