@@ -122,7 +122,7 @@ namespace RealWordUnitTest.Test
         }
 
         [Fact]
-        public async void Edit_IsNull_ReturnRedirectToIndexAction()
+        public async void Edit_IdIsNull_ReturnRedirectToIndexAction()
         {
            var result = await _productController.Edit(null);
            var redirect= Assert.IsType<RedirectToActionResult>(result);
@@ -238,16 +238,18 @@ namespace RealWordUnitTest.Test
         }
 
         [Theory]
-        [InlineData(null)]
-        public  void ProductExist_IdIsNull_ReturnFalse(int productID)
+        [InlineData(0)]
+        public  void ProductExist_IdInvalid_ReturnFalse(int productID)
         {
+            Product product = null;
+            _mockRepo.Setup(x => x.GetByID(productID)).Returns(Task.FromResult(product));
             var result = _productController.ProductExists(productID);
             Assert.False(result);
         }
 
         [Theory]
         [InlineData(1)]
-        public void ProductExist_IdIsValid_ReturnTrue(int productID)
+        public void ProductExist_IdValid_ReturnTrue(int productID)
         {
             var product = products.First(x => x.ID == productID);
             _mockRepo.Setup(x => x.GetByID(productID)).ReturnsAsync(product);
@@ -264,6 +266,11 @@ namespace RealWordUnitTest.Test
             var result =  _productController.ProductExists(productID);
             _mockRepo.Verify(x => x.GetByID(productID));
         }
+
+        //CALLBACK() => ReturnAsync() kullanırsak direkt InlineDatada verilen değerler üzerinden işlem yapılır, başka değer geldiğinde test calısmaz.
+        //Bunun için CallBack() kullanılır.
+
+
 
     }
 }
