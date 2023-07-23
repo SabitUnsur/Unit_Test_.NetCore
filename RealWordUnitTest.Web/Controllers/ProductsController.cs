@@ -10,11 +10,11 @@ using RealWordUnitTest.Web.Repositories;
 
 namespace RealWordUnitTest.Web.Controllers
 {
-    public class ProductController : Controller
+    public class ProductsController : Controller
     {
         private readonly IRepository<Product> _repository;
 
-        public ProductController(IRepository<Product> repository)
+        public ProductsController(IRepository<Product> repository)
         {
             _repository = repository;
         }
@@ -111,6 +111,7 @@ namespace RealWordUnitTest.Web.Controllers
             }
 
             var product = await _repository.GetByID((int)id);
+
             if (product == null)
             {
                 return NotFound();

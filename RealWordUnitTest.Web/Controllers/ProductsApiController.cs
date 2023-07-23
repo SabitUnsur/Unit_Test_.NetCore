@@ -12,16 +12,16 @@ namespace RealWordUnitTest.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductAPIController : ControllerBase
+    public class ProductsApiController : ControllerBase
     {
         private readonly IRepository<Product> _repository;
 
-        public ProductAPIController(IRepository<Product> repository)
+        public ProductsApiController(IRepository<Product> repository)
         {
             _repository = repository;
         }
 
-        // GET: api/ProductAPI
+        // GET: api/ProductsApi
         [HttpGet]
         public async Task<IActionResult> GetProducts()
         {
@@ -29,7 +29,7 @@ namespace RealWordUnitTest.Web.Controllers
             return Ok(products);
         }
 
-        // GET: api/ProductAPI/5
+        // GET: api/ProductsApi/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProduct(int id)
         {
@@ -41,7 +41,7 @@ namespace RealWordUnitTest.Web.Controllers
             return Ok(product);
         }
 
-        // PUT: api/ProductAPI/5
+        // PUT: api/ProductsApi/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProduct(int id, Product product)
@@ -56,7 +56,7 @@ namespace RealWordUnitTest.Web.Controllers
             return NoContent(); //Güncelleme için NoContent dön
         }
 
-        // POST: api/ProductAPI
+        // POST: api/ProductsApi
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<IActionResult> PostProduct(Product product)
@@ -67,11 +67,10 @@ namespace RealWordUnitTest.Web.Controllers
             return CreatedAtAction("GetProduct", new { id = product.ID }, product);
         }
 
-        // DELETE: api/ProductAPI/5
+        // DELETE: api/ProductsApi/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduct(int id)
+        public async Task<ActionResult<Product>> DeleteProduct(int id)
         {
-        
             var product = await _repository.GetByID(id);
             if (product == null)
             {

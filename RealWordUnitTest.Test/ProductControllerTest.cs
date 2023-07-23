@@ -17,13 +17,13 @@ namespace RealWordUnitTest.Test
         //MockBehavior.Strict() ---> Bütün her şeyi mocklamak gerekir.
 
         private readonly Mock<IRepository<Product>> _mockRepo;
-        private readonly ProductController _productController;
+        private readonly ProductsController _productController;
         private List<Product> products;
 
         public ProductControllerTest()
         {
             _mockRepo=new Mock<IRepository<Product>>();
-            _productController = new ProductController(_mockRepo.Object);
+            _productController = new ProductsController(_mockRepo.Object);
 
             products = new List<Product>() {new Product { ID=1,Name="Kalem",Price=100,Stock=-1000,Color="Red"},
             new Product { ID=2,Name="Silgi",Price=100,Stock=200,Color="Blue"}};
