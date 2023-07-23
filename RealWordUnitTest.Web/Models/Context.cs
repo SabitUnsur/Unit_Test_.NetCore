@@ -10,5 +10,11 @@ namespace RealWordUnitTest.Web.Models
         }
 
         public DbSet<Product> Products { get; set; }
+        public DbSet<Category> Categories { get; set; }
+
+        /*protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Category>().HasData(new Category { Id=1 , Name = "Kalemler"} , new Category { Id = 2,Name = "Defterler"});
+        }*/
     }
 }

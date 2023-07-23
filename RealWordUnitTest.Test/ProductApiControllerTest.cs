@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Moq;
 using RealWordUnitTest.Web.Controllers;
+using RealWordUnitTest.Web.Helpers;
 using RealWordUnitTest.Web.Models;
 using RealWordUnitTest.Web.Repositories;
 using System;
@@ -13,16 +14,27 @@ namespace RealWordUnitTest.Test
 {
     public class ProductApiControllerTest
     {
+        //Console üzerinden test için "dotnet test" yazılır. 
         private readonly Mock<IRepository<Product>> _mockRepo;
         private readonly ProductsApiController _apiController;
+        private readonly Helper _helper;
         private List<Product> products;
 
         public ProductApiControllerTest()
         {
             _mockRepo = new Mock<IRepository<Product>>();
             _apiController = new ProductsApiController(_mockRepo.Object);
+            _helper = new Helper();
             products = new List<Product>() {new Product { ID=1,Name="Kalem",Price=100,Stock=-1000,Color="Red"},
             new Product { ID=2,Name="Silgi",Price=100,Stock=200,Color="Blue"}};
+        }
+
+        [Theory]
+        [InlineData(4,5,9)]
+        public void Add_SampleValues_ReturnTotal(int a,int b,int total)
+        {
+            var result = _helper.add(a,b);
+            Assert.Equal(total, result);
         }
 
         [Fact]

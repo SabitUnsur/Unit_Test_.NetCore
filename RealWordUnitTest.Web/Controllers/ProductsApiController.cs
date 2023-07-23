@@ -21,6 +21,12 @@ namespace RealWordUnitTest.Web.Controllers
             _repository = repository;
         }
 
+        [HttpGet("{a}/{b}")]
+        public IActionResult Add(int x,int y)
+        {
+            return Ok(new Helpers.Helper().add(2, 5));
+        }
+
         // GET: api/ProductsApi
         [HttpGet]
         public async Task<IActionResult> GetProducts()

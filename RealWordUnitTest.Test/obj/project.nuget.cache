@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "mqN5HpCOUuE6ON6X1VOJq2vf0Hh/yDs5rekygqVw/xftB5TgP751gzSbP63TOlxY5E0nwf6A2STiRax5BJk/xQ==",
+  "dgSpecHash": "DYaZOAoWYUqQ527DLiX/0qOdzOifgvuICY816ndF7gR3Tmgs8tfVmgIRAs2eCK/d51FXbQoYR//PaZhOeSgc+A==",
   "success": true,
   "projectFilePath": "C:\\Users\\sabit\\source\\repos\\RealWordUnitTest.Web\\RealWordUnitTest.Test\\RealWordUnitTest.Test.csproj",
   "expectedPackageFiles": [
@@ -82,6 +82,7 @@
     "C:\\Users\\sabit\\.nuget\\packages\\microsoft.entityframeworkcore\\7.0.9\\microsoft.entityframeworkcore.7.0.9.nupkg.sha512",
     "C:\\Users\\sabit\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\7.0.9\\microsoft.entityframeworkcore.abstractions.7.0.9.nupkg.sha512",
     "C:\\Users\\sabit\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\7.0.9\\microsoft.entityframeworkcore.analyzers.7.0.9.nupkg.sha512",
+    "C:\\Users\\sabit\\.nuget\\packages\\microsoft.entityframeworkcore.inmemory\\7.0.9\\microsoft.entityframeworkcore.inmemory.7.0.9.nupkg.sha512",
     "C:\\Users\\sabit\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\7.0.5\\microsoft.entityframeworkcore.relational.7.0.5.nupkg.sha512",
     "C:\\Users\\sabit\\.nuget\\packages\\microsoft.entityframeworkcore.sqlserver\\6.0.20\\microsoft.entityframeworkcore.sqlserver.6.0.20.nupkg.sha512",
     "C:\\Users\\sabit\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\7.0.0\\microsoft.extensions.caching.abstractions.7.0.0.nupkg.sha512",
